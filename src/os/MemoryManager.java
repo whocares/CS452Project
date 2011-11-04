@@ -58,6 +58,8 @@ public class MemoryManager {
 	public void halt(String[] command) {
 		int process = Integer.parseInt(command[0]);
 		
+		logicMemory.halt(process);
+		
 	}
 	
 	public void addToLogic(String[] command) {

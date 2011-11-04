@@ -25,5 +25,9 @@ public class LogicMemory {
     		return memory.get(pNum);
     	}
     }
+    
+    public void halt(int process) {
+    	
+    }
 
 }
