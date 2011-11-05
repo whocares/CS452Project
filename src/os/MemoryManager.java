@@ -5,11 +5,14 @@ import java.util.ArrayList;
 
 public class MemoryManager {
 
+	public static final int PAGESIZE = 512;
+	
 	private LogicMemory logicMemory; 
 	private PageTable pageTable;
 	private PhysicalMemory physMemory;
 	private ArrayList<String> fileContents;
 	private int counter;
+	private int sizeOfPhysMemory;
 	
 	public MemoryManager(String fileName) {
 		
@@ -17,6 +20,7 @@ public class MemoryManager {
 		pageTable = new PageTable();
 		logicMemory = new LogicMemory();
 		counter = 0;
+		sizeOfPhysMemory = PhysicalMemory.MAXMEM;
 		
 		try { 
 			File file = new File("/data/" + fileName + ".data");
@@ -26,9 +30,8 @@ public class MemoryManager {
 			
 			String strLine;
 			try {
-				while ((strLine = br.readLine()) != null) {
+				while ((strLine = br.readLine()) != null) 
 					fileContents.add(strLine);
-				}
 			} catch (IOException e) {
 				System.out.println("Cannot read file!");
 				e.printStackTrace();
@@ -47,23 +50,44 @@ public class MemoryManager {
 		
 		String[] parsed = command.split(" ");
 		
-		if (parsed.length > 2) {
+		if (parsed.length > 2)
 			halt(parsed);
-		} else {
+		else 
 			addToLogic(parsed);
-		}
-		
 	}
 	
 	public void halt(String[] command) {
 		int process = Integer.parseInt(command[0]);
 		
 		logicMemory.halt(process);
+	}
+	
+	/*It's worth noting that this is an assumption I take
+	 * from the sample input given*/
+	public void addToLogic(String[] command) {
+		int process = Integer.parseInt(command[0]);
+		int sizeOfText = Integer.parseInt(command[1]);
+		int sizeOfData = Integer.parseInt(command[2]);
+		
+		//determines how many pages needed
+		int pagesOfText = numberOfPages(sizeOfText);
+		int pagesOfData = numberOfPages(sizeOfData);
+		
 		
 	}
 	
-	public void addToLogic(String[] command) {
+	private int numberOfPages(int size) {
+		int pages;
+		int totalPageMemory = PAGESIZE;
 		
+		/*Says you find how many pages you need till the 
+		 * number of pages is greater then or equal to the
+		 * size of the incoming file, either its text or its
+		 * data size*/
+		for (pages = 0; totalPageMemory < size; pages++)
+			totalPageMemory = totalPageMemory * pages;
+			
+		return pages;
 	}
 	
 }
