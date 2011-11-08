@@ -2,6 +2,7 @@ package os;
 
 import java.util.ArrayList;
 
+/*Finished*/
 public class PageTable {
 
     //the place in the array list is the page number and then the content is the frame number
@@ -21,6 +22,11 @@ public class PageTable {
     /*Send the page number and you get the frame number!*/
     public int getFrameNum(int pageNum) {
         return pages.get(pageNum);
+    }
+    
+    /*Null because if you remove you'd cascade the page numbers*/
+    public void removeFromTable(int pageNum) {
+    	pages.set(pageNum, null);
     }
 
 }

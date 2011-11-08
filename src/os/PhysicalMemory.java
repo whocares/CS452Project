@@ -7,10 +7,10 @@ public class PhysicalMemory {
 	public static final int MAXMEM = 4096;
 	public static final int MAXFRAMES = 8;
 	
-    private ArrayList<Frame> frames;
+    private ArrayList<PCB> frames;
     
     public PhysicalMemory() {
-        frames = new ArrayList<Frame>();
+        frames = new ArrayList<PCB>();
         makeFrames();
     }
     
@@ -19,18 +19,6 @@ public class PhysicalMemory {
     		frames.add(null); 
     		//make the frames but never add anything to them
     }
-   
-    public Frame getFrame(int frameNum) {
-    	return frames.get(frameNum);
-    }
-    
-    /*Add something to logical memory*/
-    public void editFrame(int frameNum, int pID, String seg, int pNum) {
-        if (frames.isEmpty()) {
-            Frame f = new Frame(pID, seg, pNum);
-            frames.set(frameNum, f); //add the frame to it to the first frame
-        }
-    }
     
     /*Clear a frame (halt)*/
     public void clearFrame(int frameNum) {
@@ -38,22 +26,33 @@ public class PhysicalMemory {
         frames.set(frameNum, null);
     }
     
-    public boolean checkForNull(int frameNum) {
+    private boolean checkForNull(int frameNum) {
     	if (frames.get(frameNum) == null)
     		return true;
     	else
-    		return false;
+    		return false;	
     }
     
-    public void takeAction(String action, int processNum) {
-    	int process = -1;
-    	int count = 0;
+    private int findEmptyFrame() {
+    	int freeFrame = -1;
     	
-    	//search for the correct process
-    	while (process != processNum && count < frames.size()) {
-    		process = frames.get(count).getProcID();
-    		
-    		count++;
+    	for (int i = 0; i < frames.size(); i++) {
+    		if (checkForNull(i)) {
+    			freeFrame = i;
+    			break;
+    		}
     	}
+    	
+    	return freeFrame;
+    }
+    
+    public void addToMemory(PCB toAdd) {
+    	int frameFree = findEmptyFrame();
+    	
+    	if (frameFree == -1) {
+    		System.out.println("Memory is overload!");
+    		System.exit(1);
+    	} else
+    		frames.set(frameFree, toAdd);
     }
 }
