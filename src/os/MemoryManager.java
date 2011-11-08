@@ -12,7 +12,6 @@ public class MemoryManager {
 	private PhysicalMemory physMemory;
 	private ArrayList<String> fileContents;
 	private int counter;
-	private int sizeOfPhysMemory;
 	
 	public MemoryManager(String fileName) {
 		
@@ -20,7 +19,6 @@ public class MemoryManager {
 		pageTable = new PageTable();
 		logicMemory = new LogicMemory();
 		counter = 0;
-		sizeOfPhysMemory = PhysicalMemory.MAXMEM;
 		
 		try { 
 			File file = new File("/data/" + fileName + ".data");
@@ -59,7 +57,10 @@ public class MemoryManager {
 	public void halt(String[] command) {
 		int process = Integer.parseInt(command[0]);
 		
-		logicMemory.halt(process);
+		int pNum = logicMemory.getPageNum(process);
+		int frameNum = pageTable.getFrameNum(pNum);
+		pageTable.removeFromTable(pNum);
+		physMemory.clearFrame(frameNum);
 	}
 	
 	/*It's worth noting that this is an assumption I take
