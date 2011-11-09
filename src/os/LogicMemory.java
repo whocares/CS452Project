@@ -13,7 +13,7 @@ public class LogicMemory {
     }
     
     /*Returns the page number stored in the virtual memory*/
-    public int getPageNum(int pNum) {
+    public int getPageNum(int pNum) { //searches process number so pNum is a process number
     	int answer = -1;
     	
     	for (int i = 0; i < memory.size(); i++) {

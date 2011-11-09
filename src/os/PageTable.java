@@ -6,13 +6,23 @@ import java.util.ArrayList;
 public class PageTable {
 
     //the place in the array list is the page number and then the content is the frame number
-    private ArrayList<Integer> pages; 
+    private ArrayList<Integer> pages;
+    private int processNum;
 
     /*Create an array list which will act like the page number*/
-    public PageTable() {
+    public PageTable(int pNum) {
         pages = new ArrayList<Integer>();
+        processNum = pNum;
     }
     
+    public int getProcNum() {
+    	return processNum;
+    }
+    
+    public ArrayList<Integer> getPages() {
+    	return pages;
+    }
+   
     /* Add the frame number to the page table which 
      * automatically increments to the right page number*/
     public void addToTable(int frameNum) {

@@ -20,6 +20,10 @@ public class PhysicalMemory {
     		//make the frames but never add anything to them
     }
     
+    public ArrayList<PCB> getFrames() {
+    	return frames;
+    }
+    
     /*Clear a frame (halt)*/
     public void clearFrame(int frameNum) {
     	//sets that frame number to null
@@ -46,7 +50,7 @@ public class PhysicalMemory {
     	return freeFrame;
     }
     
-    public void addToMemory(PCB toAdd) {
+    public int addToMemory(PCB toAdd) {
     	int frameFree = findEmptyFrame();
     	
     	if (frameFree == -1) {
@@ -54,5 +58,8 @@ public class PhysicalMemory {
     		System.exit(1);
     	} else
     		frames.set(frameFree, toAdd);
+
+    	return frameFree;
     }
+    
 }
